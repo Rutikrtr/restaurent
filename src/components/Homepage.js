@@ -1,18 +1,74 @@
-import React from 'react'
-import Navbar from './comman/Navbar'
-import Footer from './comman/Footer'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Navbar from './comman/Navbar';
+import Footer from './comman/Footer';
+import RestaurantCard from './pages/RestaurantCard ';
 
 const Homepage = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [restaurants, setRestaurants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/api/v1/user');
+        const rawRestaurants = response.data.data || [];
+        
+        const transformedData = rawRestaurants.map(restaurant => ({
+          ...restaurant,
+          menu: restaurant.menu || []
+        }));
+
+        setRestaurants(transformedData);
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setError('Failed to load restaurants');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRestaurants();
+  }, []);
+
+  const filteredRestaurants = restaurants.filter(restaurant => 
+    restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (restaurant.introduction || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (restaurant.location || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0a1029] text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6c63ff]"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#0a1029] text-white flex flex-col items-center justify-center">
+        <p className="text-red-500 text-xl mb-4">{error}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-[#6c63ff] hover:bg-[#5a52d5] rounded-full"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0a1029] text-white">
       <Navbar/>
       
-      {/* ... (keep the existing hero section JSX unchanged) */}
-
       <div className="container mx-auto px-6 py-12">
         <h2 className="text-3xl font-bold mb-8">Popular Restaurants</h2>
         
-        {/* {filteredRestaurants.length > 0 ? (
+        {filteredRestaurants.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredRestaurants.map(restaurant => (
               <RestaurantCard key={restaurant.id} restaurant={restaurant} />
@@ -28,7 +84,7 @@ const Homepage = () => {
               Clear Search
             </button>
           </div>
-        )} */}
+        )}
       </div>
       
       <div className="bg-[#1c2756] py-16">
@@ -43,7 +99,10 @@ const Homepage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-[#2a3563] p-6 rounded-lg text-center">
               <div className="w-16 h-16 bg-[#6c63ff] rounded-full flex items-center justify-center mx-auto mb-4">
-                {/* <Search size={28} /> */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
               </div>
               <h3 className="text-xl font-semibold mb-2">Find Restaurants</h3>
               <p className="text-gray-300">
@@ -81,9 +140,9 @@ const Homepage = () => {
         </div>
       </div>
       
-      {/* <Footer/> */}
+      <Footer/>
     </div>
-  )
-}
+  );
+};
 
-export default Homepage
+export default Homepage;
