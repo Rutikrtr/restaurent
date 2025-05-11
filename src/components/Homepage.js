@@ -3,7 +3,7 @@ import axios from 'axios';
 import Navbar from './comman/Navbar';
 import Footer from './comman/Footer';
 import RestaurantCard from './pages/RestaurantCard ';
-
+import { Search } from 'lucide-react';
 const Homepage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [restaurants, setRestaurants] = useState([]);
@@ -64,6 +64,29 @@ const Homepage = () => {
   return (
     <div className="min-h-screen bg-[#0a1029] text-white">
       <Navbar/>
+
+      <div className="relative h-[500px] bg-gradient-to-r from-[#0f1736] to-[#1c2756]">
+        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="container mx-auto px-6 relative z-10 h-full flex flex-col justify-center items-center text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            Discover the Best Food & Drinks
+          </h1>
+          <p className="text-xl mb-8 max-w-2xl">
+            Explore top-rated restaurants, book tables, and order your favorite meals with ease
+          </p>
+          
+          <div className="w-full max-w-xl relative">
+            <input
+              type="text"
+              placeholder="Search for restaurants or cuisines..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full py-4 px-6 pr-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6c63ff] focus:border-transparent"
+            />
+            <Search className="absolute right-4 top-4 text-white" size={24} />
+          </div>
+        </div>
+      </div>
       
       <div className="container mx-auto px-6 py-12">
         <h2 className="text-3xl font-bold mb-8">Popular Restaurants</h2>
