@@ -78,7 +78,7 @@ const Homepage = () => {
           <div className="w-full max-w-xl relative">
             <input
               type="text"
-              placeholder="Search for restaurants or cuisines..."
+              placeholder="Search for restaurants or places..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full py-4 px-6 pr-12 rounded-full bg-white bg-opacity-20 backdrop-blur-sm border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#6c63ff] focus:border-transparent"
