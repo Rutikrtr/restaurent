@@ -60,10 +60,12 @@ const Homepage = () => {
       </div>
     );
   }
+   const managerEmails = restaurants.map(restaurant => restaurant.managerEmail)
+   
 
   return (
     <div className="min-h-screen bg-[#0a1029] text-white">
-      <Navbar/>
+       <Navbar managerEmails={managerEmails}/>
 
       <div className="relative h-[500px] bg-gradient-to-r from-[#0f1736] to-[#1c2756]">
         <div className="absolute inset-0 bg-black opacity-40"></div>

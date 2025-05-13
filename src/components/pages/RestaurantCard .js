@@ -12,7 +12,7 @@ const RestaurantCard = ({ restaurant }) => {
 
   return (
     <Link 
-      to={`/restaurant/${restaurant.id}`} 
+      to={`/user/${restaurant._id}`} 
       className="block group"
       aria-label={`View details for ${restaurant.name}`}
     >

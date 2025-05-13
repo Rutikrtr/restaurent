@@ -1,71 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { X, Mail, Lock, AlertCircle } from 'lucide-react';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import Navbar from './comman/Navbar';
 import Footer from './comman/Footer';
-
+import { useAuth } from '../context/AuthContext';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
- 
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   
   const from = location.state?.from || '/';
 
-  // Updated handleSubmit in LoginPage component
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError('');
-  setIsLoading(true);
-
-  try {
-    const response = await axios.post(
-      `http://localhost:8000/api/v1/user/login`,
-      { email, password }
-    );
-
-    if (response.data.success) {
-      // Store accessToken in cookie with security flags
-      Cookies.set('accessToken', response.data.data.accessToken, {
-        expires: 7, // 7 days expiration
-        secure: true,
-        sameSite: 'strict',
-        path: '/'
-      });
-
-      // Store refreshToken in HttpOnly cookie (if supported by backend)
-      // This should ideally be handled by the backend in Set-Cookie header
-      Cookies.set('refreshToken', response.data.data.refreshToken, {
-        expires: 30, // 30 days expiration
-        secure: true,
-        sameSite: 'strict',
-        path: '/'
-      });
-
-      // Store user data in context/state management
-      // If using auth context:
-      // login(response.data.data.user, response.data.data.accessToken);
-      
-      navigate(from);
-    } else {
-      setError(response.data.message || 'Login failed');
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true });
     }
-  } catch (err) {
-    if (err.response?.status === 401) {
-      setError('Invalid email or password');
-    } else {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+  }, [isAuthenticated, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      // Use the login function from AuthContext instead of direct axios call
+      await login(email, password);
+      // On successful login, navigate to the intended page
+      navigate(from, { replace: true });
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError('Invalid email or password');
+      } else {
+        setError(err.response?.data?.message || 'Login failed. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } finally {
-    setIsLoading(false);
+  };
+
+  // If already authenticated, don't render the login form at all
+  if (isAuthenticated) {
+    return null; // Or a loading spinner if preferred
   }
-};
 
   return (
     <div className="min-h-screen bg-[#0a1029] text-white">

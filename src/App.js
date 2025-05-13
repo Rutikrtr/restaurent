@@ -3,8 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Homepage from './components/Homepage';
 import RegisterPage from './components/RegisterPage';
 import LoginPage from './components/LoginPage';
+import { AuthProvider } from './context/AuthContext';
+import ManagementPage from './components/pages/management/ManagementPage';
 function App() {
   return (
+    <AuthProvider>
     <Router>
             <Routes>
               <Route path="/" element={<Homepage/>} />
@@ -14,9 +17,10 @@ function App() {
               <Route path="/register" element={<RegisterPage />} />
               {/* <Route path="/registerrestaurant" element={<RegisterPageRestorant />} /> */}
               {/* <Route path="/register-restaurant" element={<RestaurantRegistrationPage />} /> */}
-              {/* <Route path="/management" element={<ManagementPage />} /> */}
+              <Route path="/management" element={<ManagementPage/>} />
             </Routes>
           </Router>
+          </AuthProvider>
   );
 }
 
