@@ -10,28 +10,32 @@ const Homepage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/api/v1/user');
-        const rawRestaurants = response.data.data || [];
-        
-        const transformedData = rawRestaurants.map(restaurant => ({
+useEffect(() => {
+  const fetchRestaurants = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/user');
+      const rawRestaurants = response.data.data || [];
+      
+      const approvedRestaurants = rawRestaurants
+        .filter(restaurant => restaurant.approvalStatus === 'approved')
+        .map(restaurant => ({
           ...restaurant,
-          menu: restaurant.menu || []
-        }));
+          menu: restaurant.menu || [],
+          introduction: restaurant.introduction || '',
+          location: restaurant.location || ''
+      }));
 
-        setRestaurants(transformedData);
-      } catch (err) {
-        console.error('Fetch error:', err);
-        setError('Failed to load restaurants');
-      } finally {
-        setLoading(false);
-      }
-    };
+      setRestaurants(approvedRestaurants);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError('Failed to load restaurants');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchRestaurants();
-  }, []);
+  fetchRestaurants();
+}, []);
 
   const filteredRestaurants = restaurants.filter(restaurant => 
     restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

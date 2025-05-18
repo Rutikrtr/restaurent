@@ -15,8 +15,7 @@ const Navbar = ({managerEmails = []} ) => {
 
   const validEmails = Array.isArray(managerEmails) ? managerEmails : [];
   const hasRestaurant = isAuthenticated && 
-                      user?.email && 
-                      validEmails.includes(user.email);
+                      user?.email ;
   return (
     <nav className="bg-[#0f1736] text-white py-4 px-6 shadow-md sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">

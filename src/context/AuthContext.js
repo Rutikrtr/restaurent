@@ -96,61 +96,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password, role) => {
-    try {
-      setIsLoading(true);
-      const userData = {
-        fullname: name,
-        email: email,
-        password: password,
-        accountType: role
-      };
-      
-      const response = await axios.post(
-        `http://localhost:8000/api/v1/user/signup`, 
-        userData
-      );
 
-      if (response.data.success) {
-        // Store tokens in cookies if your API returns them on signup
-        if (response.data.data.accessToken) {
-          Cookies.set('accessToken', response.data.data.accessToken, {
-            expires: 7,
-            secure: true,
-            sameSite: 'strict',
-            path: '/'
-          });
-        }
-        
-        if (response.data.data.refreshToken) {
-          Cookies.set('refreshToken', response.data.data.refreshToken, {
-            expires: 30,
-            secure: true,
-            sameSite: 'strict',
-            path: '/'
-          });
-        }
-
-        // Store user in state
-        const user = response.data.data.user || response.data.data;
-        setUser({
-          id: user._id,
-          name: user.fullname || user.name,
-          email: user.email,
-          role: user.accountType || user.role
-        });
-        
-        return response.data;
-      } else {
-        throw new Error(response.data.message || 'Registration failed');
-      }
-    } catch (error) {
-      console.error('Registration failed:', error);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const logout = () => {
     // Clear cookies
@@ -179,7 +125,6 @@ export const AuthProvider = ({ children }) => {
       isLoading,
       login, 
       logout, 
-      register,
       updateUser
     }}>
       {children}
