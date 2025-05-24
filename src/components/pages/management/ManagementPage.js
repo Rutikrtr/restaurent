@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Menu, FileText, Users, Settings } from 'lucide-react';
 import Navbar from '../../comman/Navbar';
 import Footer from '../../comman/Footer';
-// import MenuManagement from './MenuManagement';
+import MenuManagement from './MenuManagement';
 // import OrderManagement from './OrderManagement';
 // import ReservationManagement from './ReservationManagement';
 import { useAuth } from '../../../context/AuthContext';
@@ -117,7 +117,7 @@ const ManagementPage = () => {
           </div>
           
           <div className="lg:col-span-4">
-            {/* {activeTab === 'menu' && <MenuManagement />} */}
+            {activeTab === 'menu' && <MenuManagement />}
             {/* {activeTab === 'orders' && <OrderManagement />}
             {activeTab === 'reservations' && <ReservationManagement />}
             {activeTab === 'settings' && (

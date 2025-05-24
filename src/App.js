@@ -7,6 +7,8 @@ import { AuthProvider } from './context/AuthContext';
 import { RestaurantProvider } from './context/RestaurentContext';
 import ManagementPage from './components/pages/management/ManagementPage';
 import RegisterPageRestorant from './components/RegisterPageRestorant';
+// import RestaurantCard from './components/pages/RestaurantCard ';
+import RestaurantPage from './components/RestaurantPage';
 function App() {
   return (
     <AuthProvider>
@@ -14,7 +16,7 @@ function App() {
     <Router>
             <Routes>
               <Route path="/" element={<Homepage/>} />
-              {/* <Route path="/restaurant/:id" element={<RestaurantPage />} /> */}
+              <Route path="/user/:id" element={<RestaurantPage />} />
               {/* <Route path="/cart" element={<CartPage />} /> */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
