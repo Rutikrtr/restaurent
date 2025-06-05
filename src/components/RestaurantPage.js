@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Star, Clock, MapPin, Phone, Mail } from "lucide-react";
+import { Star, Clock, MapPin} from "lucide-react";
 import Navbar from "./comman/Navbar";
 import Footer from "./comman/Footer";
 import MenuItemCard from "./pages/MenuItemCard";
@@ -13,8 +13,6 @@ const RestaurantPage = () => {
   const [restaurant, setRestaurant] = useState(null);
   const [activeCategory, setActiveCategory] = useState("");
   const [activeTab, setActiveTab] = useState("menu");
-  const [restaurantReviews, setRestaurantReviews] = useState([]);
-  const [reservationSuccess, setReservationSuccess] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -37,11 +35,7 @@ const RestaurantPage = () => {
     fetchRestaurant();
   }, [id]);
 
-  const handleReservationSubmit = (formData) => {
-    console.log("Reservation submitted:", formData);
-    setReservationSuccess(true);
-    setTimeout(() => setReservationSuccess(false), 5000);
-  };
+  
 
   if (loading) {
     return (
@@ -190,7 +184,7 @@ const RestaurantPage = () => {
                   activeCategory ? item.category === activeCategory : true
                 )
                 .map((item) => (
-                  <MenuItemCard key={item.id} item={item} />
+                  <MenuItemCard key={item.id} item={item} restaurentId = {id}  />
                 ))}
             </div>
           </div>

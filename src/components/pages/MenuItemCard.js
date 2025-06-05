@@ -1,13 +1,14 @@
 import React from 'react';
 import { Plus } from 'lucide-react';
-// import { useCart } from '../../context/CartContext';
+import { useCart } from '../../context/CartContext';
 
-const MenuItemCard = ({ item }) => {
-//   const { addToCart } = useCart();
+const MenuItemCard = ({ item,restaurentId }) => {
+  const { addToCart } = useCart();
 
-//   const handleAddToCart = () => {
-//     addToCart(item);
-//   };
+  const handleAddToCart = () => {
+  addToCart(item, restaurentId); // send both item and restaurantId
+};
+
 
   return (
     <div className={`bg-[#1c2756] rounded-lg overflow-hidden shadow-md ${!item.available ? 'opacity-60' : ''}`}>
@@ -27,7 +28,7 @@ const MenuItemCard = ({ item }) => {
         <p className="text-gray-300 text-sm mt-1 mb-3 line-clamp-2">{item.description}</p>
         
         <button
-        //   onClick={handleAddToCart}
+          onClick={handleAddToCart}
           disabled={!item.available}
           className={`w-full py-2 rounded-md flex items-center justify-center space-x-2 
             ${item.available 
